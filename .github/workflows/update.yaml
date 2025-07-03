@@ -24,4 +24,5 @@ jobs:
 
             cd Prom_Grafa
             git pull origin main
-            docker-compose up -d prometheus grafana
+            docker-compose up -d prometheus 
+            docker-compose up -d grafana
