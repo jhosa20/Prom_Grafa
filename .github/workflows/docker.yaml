@@ -1,0 +1,25 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - app/**
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GH_TOKEN_PG }}" | docker login ghcr.io -u ${{ secrets.GH_USERNAME_GIT }} --password-stdin
+
+      - name: Build Docker image
+        run: docker build -t ghcr.io/${{ secrets.GH_USERNAME_GIT }}/fastapi-app:latest ./app
+
+      - name: Push Docker image
+        run: docker push ghcr.io/${{ secrets.GH_USERNAME_GIT }}/fastapi-app:latest

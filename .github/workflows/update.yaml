@@ -1,0 +1,27 @@
+name: Deploy Monitoring Stack
+
+on:
+  push:
+    paths:
+      - prometheus/**
+      - docker-compose.yaml
+
+jobs:
+  deploy-monitoring:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy monitoring via SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.EC2_IP_PG }}
+          username: ${{ secrets.EC2_USER_PG }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            if [ ! -d "Prom_Grafa" ]; then
+              git clone https://github.com/jhosa20/Prom_Grafa.git
+            fi
+
+            cd Prom_Grafa
+            git pull origin main
+            docker-compose up -d prometheus grafana
