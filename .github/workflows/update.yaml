@@ -18,11 +18,6 @@ jobs:
           username: ${{ secrets.EC2_USER_PG }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            if [ ! -d "Prom_Grafa" ]; then
-              git clone https://github.com/jhosa20/Prom_Grafa.git
-            fi
-
-            cd Prom_Grafa
-            git pull origin main
+            cd ~/app
             docker-compose up -d prometheus 
             docker-compose up -d grafana
